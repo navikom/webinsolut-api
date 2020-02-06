@@ -1,0 +1,31 @@
+version: "2"
+services:
+  pixart_api_test:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.test
+      args:
+        port: ${PORT}
+    env_file:
+      - ../test.env
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - db_test
+    links:
+      - db_test
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db_test:${DB_PORT}/${DB_NAME}
+  db_test:
+    image: postgres
+    env_file:
+      - ../test.env
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ../tablesTest.sql:/docker-entrypoint-initdb.d/init.sql

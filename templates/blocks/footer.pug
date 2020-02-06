@@ -1,0 +1,55 @@
+div(class="footer" style={
+  clear: "both",
+  "margin-top": "10px",
+  "text-align": "center",
+  width: "100%"
+})
+    table(border="0" cellpadding="0" cellspacing="0" style=tableStyle)
+        tr
+        - const tdStyle = { "font-family": "sans-serif", "vertical-align": "top","padding-bottom": "10px","padding-top": "10px","font-size": "12px",color: "#999999","text-align": "center"}
+
+            td(class="content-block" style=tdStyle)
+                span(class="apple-link" style={
+                  color: "#999999",
+                  "font-size": "12px",
+                  "text-align": "center"
+                }) #{address || 'No address'}
+
+                br
+
+                if unsubscribeLink
+                    span If you wish to manage your subscription preferences or unsubscribe,
+                    br
+                    span  please visit our
+
+                if unsubscribeLink
+                    a(href=unsubscribeLink style={
+                      "text-decoration": "underline",
+                      color: "#999999",
+                      "font-size": "12px",
+                      "text-align": "center"
+                    })  subscription center
+                if unsubscribeLink
+                    span  at any time.
+                    a(href=`${addresLink || '#'}` style={
+                      color: "#999999",
+                      "font-size": "12px",
+                      "text-align": "center",
+                      "text-decoration": "none"
+                    })  Privacy Police
+                else
+                    a(href=`${addresLink || '#'}` style={
+                      color: "#999999",
+                      "font-size": "12px",
+                      "text-align": "center",
+                      "text-decoration": "none"
+                    })  #{subject || 'Unknown'} team
+        if unsubscribeLink
+            tr
+                td(class="content-block powered-by" style=tdStyle) Powered by
+                    a(href=`${addresLink || '#'}` style={
+                      color: "#999999",
+                      "font-size": "12px",
+                      "text-align": "center",
+                      "text-decoration": "none"
+                    })  #{subject || 'Unknown'} team

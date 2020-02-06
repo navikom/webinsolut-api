@@ -1,0 +1,10 @@
+
+LICENSE
+README.md
+.git/
+example.env
+.travis.yml
+node_modules/
+lib/
+package-lock.json
+npm-debug.log

@@ -1,0 +1,2704 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is documentatin for the Node API. For every request you must include in the header: \n Content-Type: application/json \n\n For protected routes by authorization we use JWT. Each of these have a lock by them. Must include a Bearer Token in the header \n Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ...",
+    "version": "1.0.0",
+    "title": "Rest Node API PostgreSQL + JWT",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": ""
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "35.204.177.158:8080",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Authentication and More",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": ""
+      }
+    },
+    {
+      "name": "category",
+      "description": "creation and category management"
+    },
+    {
+      "name": "product",
+      "description": "creation and product management"
+    },
+    {
+      "name": "image",
+      "description": "creation and image management"
+    },
+    {
+      "name": "query",
+      "description": "retrieve data by query"
+    },
+    {
+      "name": "sheets",
+      "description": "retrieve data from google docs"
+    },
+    {
+      "name": "object",
+      "description": "creation and object management"
+    },
+    {
+      "name": "param",
+      "description": "creation and param management"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/categories": {
+      "post": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Create category",
+        "description": "Creates category of products",
+        "operationId": "create",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates category",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateCategoryResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Get categories list",
+        "description": "Get categories list of products",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnCategoriesResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Return Category",
+        "description": "Returns information about Category",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Update category",
+        "description": "Update Category information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated category object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UpdateCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "category"
+        ],
+        "summary": "Delete category",
+        "description": "Delete category",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Create product",
+        "description": "Creates product",
+        "operationId": "create",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates product",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateProduct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateProductResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Get products list",
+        "description": "Get list of products",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnProductsResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Return Product",
+        "description": "Returns information about Product",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnProductResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Update product",
+        "description": "Update Product information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated product object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateProduct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UpdateProductResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Delete product",
+        "description": "Delete product",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteProductResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/ean/{ean}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Return Products",
+        "description": "Returns information about Products",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "ean",
+            "in": "path",
+            "description": "ean that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "12345"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnProductsResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/info/{id}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Return Product info",
+        "description": "Returns information about Product",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ean that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "77"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnProductInfoResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/id/{id}": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Return Product info",
+        "description": "Returns information about Product",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ean that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "77"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnProductInfoResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/images": {
+      "post": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Create image",
+        "description": "Creates image",
+        "operationId": "create",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates image",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateImage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateImageResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Get images list",
+        "description": "Get list of images",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnImagesResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/images/{id}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Return Image",
+        "description": "Returns information about Image",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnImageResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Update image",
+        "description": "Update Image information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated image object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateImage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UpdateImageResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Delete image",
+        "description": "Delete image",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteImageResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "Creates user that can now be used for authentication",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateUserResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Return user",
+        "description": "This can only be done by the logged in user.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnUserResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update user",
+        "description": "This can only be done by the logged in user.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserBody"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful request",
+            "schema": {
+              "$ref": "#/definitions/ApiSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Soft delete user",
+        "description": "This can only be done by the logged in user.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/ApiSuccessResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User Login",
+        "description": "Returns Bearer Token for JWT authentication",
+        "operationId": "createUsersWithArrayInput",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/LoginUserResponse"
+            }
+          },
+          "422": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/query": {
+      "post": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Custom query",
+        "description": "Returns data",
+        "operationId": "Call query",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "List of user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/ReturnQueryResponse"
+            }
+          },
+          "422": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "query"
+        ],
+        "summary": "Return query data",
+        "description": "Returns data.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "JWT token without substring Bearer",
+            "required": true,
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2Vy..."
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Query string",
+            "required": true,
+            "type": "string",
+            "example": "select * from categories where id=1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnQueryResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/google-docs": {
+      "get": {
+        "tags": [
+          "sheets"
+        ],
+        "summary": "Get sheets info",
+        "description": "Get sheets info",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnSheetRowsResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/google-docs/{index}/{offset}/{limit}": {
+      "get": {
+        "tags": [
+          "sheets"
+        ],
+        "summary": "Get rows from sheet",
+        "description": "Get rows from sheet",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          },
+          {
+            "name": "index",
+            "in": "path",
+            "description": "index that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "0"
+          },
+          {
+            "name": "offset",
+            "in": "path",
+            "description": "offset that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "path",
+            "description": "limit that need to be updated",
+            "required": true,
+            "type": "string",
+            "example": "20"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnSheetRowsResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/objects": {
+      "post": {
+        "tags": [
+          "object"
+        ],
+        "summary": "Create object",
+        "description": "Creates object",
+        "operationId": "create",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateObjectResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "object"
+        ],
+        "summary": "Get object list",
+        "description": "Get object list",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnObjectsResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/objects/{id}": {
+      "get": {
+        "tags": [
+          "object"
+        ],
+        "summary": "Return Object",
+        "description": "Returns information about Object",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnObjectResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "object"
+        ],
+        "summary": "Update object",
+        "description": "Update Object information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UpdateObjectResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "object"
+        ],
+        "summary": "Delete object",
+        "description": "Delete object",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteObjectResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/params": {
+      "post": {
+        "tags": [
+          "param"
+        ],
+        "summary": "Create object parameter",
+        "description": "Creates object parameter",
+        "operationId": "create",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Creates object parameter",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CreateParamResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "param"
+        ],
+        "summary": "Get object params list",
+        "description": "Get object params list",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUz..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnParamsResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid operation",
+            "schema": {
+              "$ref": "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/params/{id}": {
+      "get": {
+        "tags": [
+          "param"
+        ],
+        "summary": "Return Parameter",
+        "description": "Returns information about Object parameter",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReturnParamResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "param"
+        ],
+        "summary": "Update object parameter",
+        "description": "Update Param information",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated parameter",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UpdateParamResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "param"
+        ],
+        "summary": "Delete object parameter",
+        "description": "Delete object parameter",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIU..."
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteParamResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid Order"
+          },
+          "401": {
+            "description": "unauthorized",
+            "schema": {
+              "$ref": "#/definitions/ApiUnauthorizedResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "qud_auth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ReturnQueryResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    "CreateCategory": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Some description"
+        },
+        "image_id": {
+          "type": "string",
+          "example": "Some image id"
+        },
+        "category_id": {
+          "type": "integer",
+          "example": 10,
+          "description": "Define parent category if needed"
+        },
+        "refs": {
+          "type": "string",
+          "example": "Some ref",
+          "description": "If data not exists in google cloud ref value provided"
+        }
+      }
+    },
+    "CreateCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new category."
+        }
+      }
+    },
+    "UpdateCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully category updated."
+        }
+      }
+    },
+    "UpdateCategoryBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Some description"
+        },
+        "image_id": {
+          "type": "string",
+          "example": "Some image id"
+        },
+        "category_id": {
+          "type": "integer",
+          "example": 10,
+          "description": "Define parent category if needed"
+        },
+        "refs": {
+          "type": "string",
+          "example": "Some ref",
+          "description": "If data not exists in google cloud ref value provided"
+        }
+      }
+    },
+    "ReturnCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/CreateCategory"
+        }
+      }
+    },
+    "ReturnCategoriesResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateCategory"
+          }
+        }
+      }
+    },
+    "DeleteCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully category deleted."
+        }
+      }
+    },
+    "Object": {
+      "type": "object"
+    },
+    "CreateProduct": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Some description"
+        },
+        "description2": {
+          "type": "string",
+          "example": "Some additional description"
+        },
+        "category_id": {
+          "type": "integer",
+          "example": 10,
+          "description": "Define parent category if needed"
+        },
+        "item_jm": {
+          "type": "string",
+          "example": "Some item_jm"
+        },
+        "number": {
+          "type": "string",
+          "example": "Some number"
+        },
+        "price": {
+          "type": "string",
+          "example": "Some price"
+        },
+        "refs": {
+          "type": "string",
+          "example": "Some ref",
+          "description": "If data not exists in google cloud ref value provided"
+        }
+      }
+    },
+    "CreateProductResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new product."
+        }
+      }
+    },
+    "UpdateProductResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully product updated."
+        }
+      }
+    },
+    "ReturnProductResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/CreateProduct"
+        }
+      }
+    },
+    "ReturnProductInfoResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/Object"
+        }
+      }
+    },
+    "ReturnProductsResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateProduct"
+          }
+        }
+      }
+    },
+    "DeleteProductResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully product deleted."
+        }
+      }
+    },
+    "CreateImage": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "path": {
+          "type": "string",
+          "example": "Some path to google cloud storage"
+        },
+        "thumb": {
+          "type": "string",
+          "example": "Some path to google cloud storage",
+          "description": "Some path or null"
+        }
+      }
+    },
+    "CreateImageResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new image."
+        }
+      }
+    },
+    "UpdateImageResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully image updated."
+        }
+      }
+    },
+    "ReturnImageResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/CreateImage"
+        }
+      }
+    },
+    "ReturnImagesResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateImage"
+          }
+        }
+      }
+    },
+    "DeleteImageResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully image deleted."
+        }
+      }
+    },
+    "CreateUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "test@test.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "secure-password"
+        }
+      }
+    },
+    "CreateUserResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new user."
+        }
+      }
+    },
+    "LoginUserResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiLUxJUmRs..."
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "test@test.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "$2b$10$W6/IfUzqzS9bHmp64FsUROQ..."
+                },
+                "role": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "user_id": {
+                  "type": "string",
+                  "example": "-LIRdlOMT6pBQy..."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ReturnUserResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "john.smith@gmail.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "$2b$10$W6/IfUzqzS9bHmp64FsUROQDIQZU..."
+            },
+            "role": {
+              "type": "string",
+              "example": "ADMIN"
+            },
+            "user_id": {
+              "type": "string",
+              "example": "-LIRdlOMT6pB..."
+            }
+          }
+        }
+      }
+    },
+    "UpdateUserBody": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.smith@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2b$10$W6/IfUzqzS9bHmp64FsUROQDIQZU..."
+        },
+        "role": {
+          "type": "string",
+          "example": "ADMIN"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "-LIRdlOMT6pB..."
+        }
+      }
+    },
+    "ApiErrorResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiUnauthorizedResponse": {
+      "type": "string",
+      "example": "Unauthorized"
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "ReturnSheetRowsResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/Object"
+        }
+      }
+    },
+    "CreateObject": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "Person"
+            },
+            "description": {
+              "type": "string",
+              "example": "Some description"
+            }
+          }
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateParam"
+          }
+        }
+      }
+    },
+    "CreateObjectResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new object."
+        }
+      }
+    },
+    "UpdateObjectResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully object updated."
+        }
+      }
+    },
+    "ReturnObjectResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/CreateObject"
+        }
+      }
+    },
+    "ReturnObjectsResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateObject"
+          }
+        }
+      }
+    },
+    "DeleteObjectResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully object deleted."
+        }
+      }
+    },
+    "CreateParam": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "name"
+        },
+        "type": {
+          "type": "number",
+          "example": 1
+        },
+        "require": {
+          "type": "boolean",
+          "example": true
+        }
+      }
+    },
+    "CreateParamResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully created new param."
+        }
+      }
+    },
+    "UpdateParamResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully param updated."
+        }
+      }
+    },
+    "ReturnParamResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "$ref": "#/definitions/CreateParam"
+        }
+      }
+    },
+    "ReturnParamsResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateParam"
+          }
+        }
+      }
+    },
+    "DeleteParamResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "Successfully param deleted."
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more",
+    "url": ""
+  }
+}
