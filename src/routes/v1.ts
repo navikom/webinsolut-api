@@ -19,6 +19,7 @@ import Roles from '@app/controllers/role.controller';
 import Campaigns from '@app/controllers/campaign.controller';
 import Segments from '@app/controllers/segment.controller';
 import Regions from '@app/controllers/region.controller';
+import Generator from '@app/controllers/generator.controller';
 
 import callPassport from '@app/middleware/passport';
 import {MainController} from '@app/controllers/main.controller';
@@ -113,6 +114,9 @@ common(Regions, 'regions');
 common(Campaigns, 'campaigns');
 router.get(`/campaigns/:page/:pageSize/:channel`, mustAuthenticated,
   (req, res) => Campaigns.getWithPagination(req, res));
+
+//********* GENERATOR ************************
+router.get('/generator/run', Generator.run);
 
 pixartRoutes(router, mustAuthenticated);
 

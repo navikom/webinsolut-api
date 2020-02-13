@@ -1,5 +1,6 @@
-import {IUser} from '@app/models/user.model';
-import {Column, DataType} from 'sequelize-typescript';
+import { IUser } from '@app/models/user.model';
+import { Column, DataType } from 'sequelize-typescript';
+import { randomId, randomInt } from '@app/utils/utils';
 
 export type LoginSuccessResponse = {
   session: number,
@@ -32,3 +33,25 @@ export type RegionType = {
   lt?: number;
   lg?: number;
 }
+
+export type AndroidDeviceType = {
+  androidId: string;
+  release: number;
+  sdk: number;
+  manufacturer: string;
+  brand: string;
+  model: string;
+  device: string;
+}
+
+export type IOSDeviceType = {
+  name: string;
+  systemName: string;
+  systemVersion: string;
+  model: string;
+  localizedModel: string;
+  vendorId: string;
+  release: Date;
+}
+
+export type DeviceType = AndroidDeviceType | IOSDeviceType;

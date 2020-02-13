@@ -85,26 +85,6 @@ export default class AuthService {
     return user;
   }
 
-  // static async getUserByIdWithRefreshToken(id: number): Promise<User> {
-  //   let user = User.findByIdWithTokens(id);
-  //   if (!user) throw new ErrorHandler('user-not-found');
-  //   return user;
-  // }
-
-  // static async checkRefreshToken(token: string) {
-  //   const tokenIsOld = await OldTokens.isOldToken(token);
-  //   if (tokenIsOld) {
-  //     throw new ErrorHandler('refresh-token-already-closed');
-  //   }
-  //   const data = await jwtDecode(token) as JWTTokenType;
-  //   if (!data) throw new ErrorHandler('wrong-token');
-  //
-  //   if (data.exp < Math.floor(Date.now() / 1000)) throw new ErrorHandler('refresh-token-expired');
-  //   const user = await AuthService.getUserByIdWithRefreshToken(data.userId);
-  //   if (!user) throw new ErrorHandler('user-not-found');
-  //   return user;
-  // };
-
   static async logout(req: RichRequest) {
     Auth.logout(req);
   }

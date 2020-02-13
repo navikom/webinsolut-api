@@ -6,7 +6,6 @@ import {User} from '@app/models/user.model';
 import {AuthType} from '@app/types';
 import {ErrorHandler} from '@app/helpers/ErrorHandler';
 import {LoginSuccessResponse} from '@app/models/types/models';
-import AuthService from '@app/services/auth.service';
 import {UsersApps} from '@app/models/usersApps.model';
 import {UsersDevices} from '@app/models/usersDevices.model';
 import EventsService from '@app/services/event.service';
@@ -60,7 +59,7 @@ class AuthModel {
     if (req.session && req.session.userId === req.iuser!.userId) {
       await req.session!.update({anonymous: false});
     } else {
-      req.session = await Session.create({userId: req.iuser!.userId, anonymous: false, deviceId: req.device!.deviceId});
+      await SessionService.create(req, false);
     }
   }
 

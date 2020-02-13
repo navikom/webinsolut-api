@@ -1,15 +1,16 @@
 import {
-  AutoIncrement,
+  AutoIncrement, BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
-  DeletedAt,
+  DeletedAt, ForeignKey,
   Model,
-  PrimaryKey,
+  PrimaryKey, Sequelize,
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { User } from '@app/models/user.model';
 
 @Table({tableName: 'sessions', timestamps: true, paranoid: true})
 class ISession extends Model<ISession> {
@@ -49,5 +50,19 @@ export class Session extends ISession {
       paranoid: false
     });
     return item;
+  }
+
+  static findByUserId(userId: number) {
+    return this.findAll({
+      where: {userId},
+      paranoid: false
+    });
+  }
+
+  static findActiveByUserId(userId: number) {
+    return this.findOne({
+      where: {userId, anonymous: false},
+      order: [['sessionId', 'DESC']]
+    });
   }
 }

@@ -16,7 +16,6 @@ class UserController extends MainController<User> {
     try {
       const user = await User.findFullDataById(parseInt(req.params.id));
       if(!user) throw new ErrorHandler('user-not-found');
-      user.refreshToken = '';
       res.send(successResponse(user));
     } catch (e) {
       res.status(HTTPStatus.SERVER_ERROR).send(errorResponse(`${this.name}:${e.message}`));

@@ -42,12 +42,12 @@ const sequelize = new Sequelize(
     dialectOptions: {
       timezone,
     },
-    logging: true,
+    logging: false,
     timezone,
-    models: [User, UsersApps, App, Role, UsersRoles, ACategory, Logs, Event, AppsImages, Card, Device,
+    models: [User, Session, UsersApps, App, Role, UsersRoles, ACategory, Logs, Event, AppsImages, Card, Device,
       Image, Payment, UsersDevices, UsersWithdrawMethods, WithdrawMethod, PixartCategory, PixartPicture, Crash, Region,
       UsersRegions, PixartUsersPictures, Campaign, Segment, AndroidTarget, CampaignsAndroidTargets,
-    CampaignsIosTargets, CampaignsSegments, IosTarget, Variant, Session]
+    CampaignsIosTargets, CampaignsSegments, IosTarget, Variant]
   }
 );
 
