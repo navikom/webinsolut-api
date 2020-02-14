@@ -121,7 +121,7 @@ export class DataGenerateService implements IDataGenerateService {
     const userAgent = randomItem(user.devices).device.info.headers;
     return this.headers({
       'user-agent': userAgent,
-    });
+    }, userId);
   }
 
   async runMethods(scenario: ScenarioType[]) {
@@ -215,15 +215,12 @@ export class DataGenerateService implements IDataGenerateService {
 
   async login() {
     const result = await db.query(
-      `select ses.user_id as userId, email from sessions ses
+      `select ses.user_id as userId, email, MIN(RANDOM()) AS o from sessions ses
         RIGHT JOIN users us on us.user_id = ses.user_id
         WHERE anonymous='true'
-        ORDER BY random() LIMIT ${randomInt(2, 10)}`
+        GROUP BY userId, email ORDER BY o LIMIT ${randomInt(2, 10)}`
     );
     let length = result[0].length;
-    if (length === 0) {
-      new DataGenerateService([logout]);
-    }
     while (length--) {
       const { userid, email } = result[0][length] as { userid: number, email: string };
       try {
@@ -240,18 +237,15 @@ export class DataGenerateService implements IDataGenerateService {
 
   async performForUsers(cb: (userId: number) => {}) {
     const result = await db.query(
-      `select ses.user_id as userId from sessions ses
+      `select ses.user_id as userId, MIN(RANDOM()) AS o from sessions ses
         RIGHT JOIN users us on us.user_id = ses.user_id
         WHERE anonymous='false'
-        ORDER BY random() LIMIT ${randomInt(2, 10)}`
+        GROUP BY userId ORDER BY o LIMIT ${randomInt(2, 10)}`
     );
     let length = result[0].length;
-    if (length === 0) {
-      new DataGenerateService([login]);
-    }
     while (length--) {
       const { userid } = result[0][length] as { userid: number };
-      cb(userid);
+      await cb(userid);
     }
   }
 
@@ -314,6 +308,7 @@ export class DataGenerateService implements IDataGenerateService {
 
   static runService() {
     new DataGenerateService([anonymousSession, signUp, userData, logout, login, event]);
+    // new DataGenerateService([logout, login]);
     // new DataGenerateService([adjustData]);
   }
 
