@@ -6,6 +6,17 @@ export function randomItem(array: any[]) {
   return array[randomInt(0, array.length - 1)];
 }
 
+export function randomItemCount(array: any[], count: number) {
+  const getFreshNum = (nums: number[]): number => {
+    const num = randomInt(0, array.length - 1);
+    return nums.includes(num) ? getFreshNum(nums) : num;
+  };
+
+  const arr = [...Array(count)];
+  const reduced = arr.reduce((a: number[]) => {a.push(getFreshNum(a)); return a}, []);
+  return reduced.map((i: number) => array[i]);
+}
+
 export function randomId() {
   return Math.random().toString(26).slice(2);
 }

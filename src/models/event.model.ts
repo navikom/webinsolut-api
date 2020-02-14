@@ -50,6 +50,7 @@ export class IEvent extends Model<IEvent> {
 }
 
 export class Event extends IEvent {
+
   static async paginationGroupUser(page: number, pageSize: number) {
     const offset = page * pageSize;
     const limit = offset + pageSize;
@@ -87,11 +88,33 @@ ORDER BY "IEvents"."eventId" DESC LIMIT ${limit} OFFSET ${offset}`;
     const limit = offset + pageSize;
     const userId = parseInt(id);
     const query = {
-      offset, limit,
+      offset: limit * offset,
+      limit,
       where: {userId},
       order: Sequelize.literal('event_id DESC')
     };
 
+    return this.findAndCountAll(query);
+  }
+
+  static paginationlist(offset: number, limit: number) {
+    const query = {
+      offset: limit * offset,
+      limit,
+      include: [{
+        model: User,
+        paranoid: false,
+        attributes: {
+          exclude: ['password', 'refreshToken', 'resetPasswordToken'],
+          include: [
+            [Sequelize.literal('(Select COUNT(*) FROM events e WHERE e.user_id = "IEvent"."user_id")'), 'eventsCount'],
+            [Sequelize.literal('(SELECT anonymous FROM sessions ses WHERE ses.user_id = "IEvent"."user_id" ORDER BY ses.session_id DESC LIMIT 1)'), 'anonymous']
+          ]
+        },
+      }],
+      order: Sequelize.literal('event_id DESC')
+    };
+    // @ts-ignore
     return this.findAndCountAll(query);
   }
 }

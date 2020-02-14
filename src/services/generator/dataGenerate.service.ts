@@ -1,6 +1,5 @@
-import fetch, { Response } from 'node-fetch';
-import { asyncTimeout, getRandomDate, randomId, randomInt, randomItem, randomString } from '@app/utils/utils';
-import { DeviceType } from '@app/models/types/models';
+import fetch from 'node-fetch';
+import { asyncTimeout, getRandomDate, randomInt, randomItem, randomString } from '@app/utils/utils';
 import { User } from '@app/models/user.model';
 import { Session } from '@app/models/session.model';
 import { Sequelize } from 'sequelize-typescript';
@@ -9,173 +8,7 @@ import { ErrorHandler } from '@app/helpers/ErrorHandler';
 import { Device } from '@app/models/device.model';
 import { getCookies } from '@app/helpers/HTTPRequest';
 import { RichRequest } from '@app/interfaces/RichRequest';
-
-type LocaleType = {
-  language: string;
-  code: string;
-  country: string;
-  timezone: string;
-}
-
-const names = ['Leena', 'Ayana', 'Jena', 'Maryalice', 'Jodee', 'Gerda', 'Karlyn', 'Aletha', 'Yuko', 'Lenore', 'Monica', 'Arminda', 'So', 'Maire', 'Omega', 'Alethia', 'Monnie', 'Natosha', 'Marcie', 'Jaimie', 'Giselle', 'Veta', 'Hiedi', 'Marni', 'Masako', 'Zora', 'Vinita', 'Inge', 'Angelique', 'Casie', 'Hyun', 'Jonna', 'Marsha', 'Ranee', 'Dorie', 'Kenyetta', 'Lizzette', 'Shanda', 'Celine', 'Stefanie', 'Phylicia', 'Brittni', 'Pearle', 'Waneta', 'Avis', 'Agueda', 'Jacinda', 'Lillian', 'Pauletta', 'Katy', 'Lee', 'Brice', 'Bryon', 'Alonso', 'Boyce', 'Kurt', 'Floyd', 'Keven', 'Trevor', 'Vernon', 'King', 'Oswaldo', 'Tristan', 'Mark', 'Sammy', 'Fernando', 'Otha', 'Randal', 'Huey', 'Guadalupe', 'Sung', 'Elbert', 'Leif', 'Jon', 'Roland', 'Omar', 'Jamaal', 'Rudy', 'Rueben', 'Julius', 'Danilo', 'Dexter', 'Giuseppe', 'Garfield', 'Lowell', 'Jonah', 'Moises', 'Patricia', 'Michale', 'Cletus', 'Bobbie', 'Tobias', 'Anthony', 'Lindsey', 'Benito', 'Darrell', 'Renaldo', 'Omer', 'Ty', 'Rayford'];
-
-const locales: LocaleType[] = [
-  { language: 'en', code: 'en-US', country: 'US', timezone: 'America/New_York' },
-  { language: 'en', code: 'en-US', country: 'US', timezone: 'America/Los_Angeles' },
-  { language: 'en', code: 'en-US', country: 'US', timezone: 'America/Chicago' },
-  { language: 'en', code: 'en-GB', country: 'GB', timezone: 'Europe/London' },
-  { language: 'en', code: 'en-US', country: 'CA', timezone: 'America/Toronto' },
-  { language: 'fr', code: 'fr-CA', country: 'CA', timezone: 'America/Toronto' },
-  { language: 'fr', code: 'fr-FR', country: 'FR', timezone: 'Europe/Paris' },
-];
-
-const devices: DeviceType[] = [
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': 23,
-    'manufacturer': 'HUAWEI',
-    'brand': 'Huawei',
-    'model': 'ALE-L21',
-    'device': 'hwALE-H'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(26, 28),
-    'manufacturer': 'HUAWEI',
-    'brand': 'Huawei',
-    'model': 'P10',
-    'device': 'P10'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'GOOGLE',
-    'brand': 'Google',
-    'model': 'Pixel/XL',
-    'device': 'Pixel/XL'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'GOOGLE',
-    'brand': 'Google',
-    'model': 'Pixel 2/XL',
-    'device': 'Pixel 2/XL'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'GOOGLE',
-    'brand': 'Google',
-    'model': 'Pixel 3a/XL',
-    'device': 'Pixel 3a/XL'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'HTC',
-    'brand': 'HTC',
-    'model': 'Dream',
-    'device': 'Dream'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'HTC',
-    'brand': 'HTC',
-    'model': 'Hero',
-    'device': 'Hero'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'Samsung Electronics',
-    'brand': 'Samsung',
-    'model': 'Galaxy S7/Edge',
-    'device': 'Galaxy S7/Edge'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'Samsung Electronics',
-    'brand': 'Samsung',
-    'model': 'Galaxy S8/+',
-    'device': 'Galaxy S8/+'
-  },
-  {
-    'androidId': randomId(),
-    'release': 6.0,
-    'sdk': randomInt(25, 28),
-    'manufacturer': 'Samsung Electronics',
-    'brand': 'Samsung',
-    'model': 'Galaxy Note 8',
-    'device': 'Galaxy Note 8'
-  },
-  // IOS
-  {
-    'name': 'My iPhone',
-    'systemName': 'iPhone3,3',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPhone 4',
-    'localizedModel': 'iPhone 4',
-    'vendorId': randomId(),
-    'release': new Date('September 9, 2014'),
-  },
-  {
-    'name': 'My iPhone',
-    'systemName': 'iPhone6,2',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPhone 5s',
-    'localizedModel': 'iPhone 5s',
-    'vendorId': randomId(),
-    'release': new Date('2016-03-21'),
-  },
-  {
-    'name': 'My iPhone',
-    'systemName': 'iPhone8,1',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPhone 6s',
-    'localizedModel': 'iPhone 6s',
-    'vendorId': randomId(),
-    'release': new Date('2018-09-12'),
-  },
-  {
-    'name': 'My iPhone',
-    'systemName': 'iPhone10,6',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPhone X',
-    'localizedModel': 'iPhone X',
-    'vendorId': randomId(),
-    'release': new Date('2018-09-12'),
-  },
-  {
-    'name': 'My iPhone',
-    'systemName': 'iPhone11,8',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPhone XR',
-    'localizedModel': 'iPhone XR',
-    'vendorId': randomId(),
-    'release': new Date('2019-09-10'),
-  },
-  {
-    'name': 'My iPad',
-    'systemName': 'iPad7,2',
-    'systemVersion': `${randomInt(6, 13)}.${randomInt(0, 9)}`,
-    'model': 'iPad Pro 12.9-inch 2',
-    'localizedModel': 'iPad Pro 12.9-inch 2',
-    'vendorId': randomId(),
-    'release': new Date('2018-03-27'),
-  }
-];
+import { devices, eventData, eventTitles, locales, names } from '@app/services/generator/data';
 
 const anonymousSession: ScenarioType = {
   method: 'anonymous',
@@ -201,6 +34,10 @@ const event: ScenarioType = {
   method: 'event',
 };
 
+const adjustData: ScenarioType = {
+  method: 'adjustData',
+};
+
 const defaultHeaders = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
@@ -224,6 +61,8 @@ interface IDataGenerateService {
   logout(): void;
 
   event(): void;
+
+  adjustData(): void;
 }
 
 export class DataGenerateService implements IDataGenerateService {
@@ -262,7 +101,7 @@ export class DataGenerateService implements IDataGenerateService {
 
   async headersByUser(userId: number) {
     const session = await Session.findActiveByUserId(userId);
-    if (!session) throw new ErrorHandler('There is no active session');
+    if (!session) throw new ErrorHandler('There is no active session user' + userId);
     const device = await Device.findOne({ where: { deviceId: session.deviceId } });
     if (!device) throw new ErrorHandler(`There is no device by deviceId ${session.deviceId}`);
     const params = {
@@ -272,16 +111,16 @@ export class DataGenerateService implements IDataGenerateService {
     console.log('Headers user %d session %d', userId, session.sessionId);
     return this.headers({
       Cookie: cookie,
-      'user-agent': JSON.stringify(device.info),
+      'user-agent': device.info.headers,
     }, userId);
   }
 
   async headersForAnonymous(userId: number) {
     const user = await User.findFullDataById(userId);
     if (user.devices.length === 0) throw new ErrorHandler(`There are no devices for user ${userId}`);
-    const userAgent = randomItem(user.devices).device.info;
+    const userAgent = randomItem(user.devices).device.info.headers;
     return this.headers({
-      'user-agent': JSON.stringify(userAgent),
+      'user-agent': userAgent,
     });
   }
 
@@ -382,6 +221,9 @@ export class DataGenerateService implements IDataGenerateService {
         ORDER BY random() LIMIT ${randomInt(2, 10)}`
     );
     let length = result[0].length;
+    if (length === 0) {
+      new DataGenerateService([logout]);
+    }
     while (length--) {
       const { userid, email } = result[0][length] as { userid: number, email: string };
       try {
@@ -396,7 +238,7 @@ export class DataGenerateService implements IDataGenerateService {
     }
   }
 
-  async logout() {
+  async performForUsers(cb: (userId: number) => {}) {
     const result = await db.query(
       `select ses.user_id as userId from sessions ses
         RIGHT JOIN users us on us.user_id = ses.user_id
@@ -404,20 +246,43 @@ export class DataGenerateService implements IDataGenerateService {
         ORDER BY random() LIMIT ${randomInt(2, 10)}`
     );
     let length = result[0].length;
+    if (length === 0) {
+      new DataGenerateService([login]);
+    }
     while (length--) {
       const { userid } = result[0][length] as { userid: number };
-      try {
-        const headers = await this.headersByUser(userid);
-        const response = await fetch(`${DataGenerateService.url}users/logout`, { method: 'GET', headers });
-        console.log('User %d logout', userid, response.status);
-      } catch (e) {
-        console.log('User Logout Error %s', e.message);
-      }
+      cb(userid);
     }
   }
 
-  async event() {
+  async logout() {
+    await this.performForUsers(async (userId: number) => {
+      try {
+        const headers = await this.headersByUser(userId);
+        const response = await fetch(`${DataGenerateService.url}users/logout`, { method: 'GET', headers });
+        console.log('User %d logout', userId, response.status);
+      } catch (e) {
+        console.log('User Logout Error %s', e.message);
+      }
 
+    });
+  }
+
+  async event() {
+    await this.performForUsers(async (userid: number) => {
+      try {
+        const headers = await this.headersByUser(userid);
+        const title = randomItem(eventTitles);
+        const body = JSON.stringify({
+          title,
+          data: eventData[title]()
+        });
+        const response = await fetch(`${DataGenerateService.url}events`, { method: 'POST', headers, body });
+        console.log('Event %s user %d created', title, userid, response.status);
+      } catch (e) {
+        console.log('Event Error %s', e.message);
+      }
+    });
   }
 
   async fillCache(user: User, headers: { [key: string]: string }, logMessage: string) {
@@ -430,8 +295,26 @@ export class DataGenerateService implements IDataGenerateService {
     console.log(logMessage, user.userId, cookie.SESSION);
   }
 
+  async adjustData() {
+    const rows = await Device.findAll();
+
+    rows.forEach((row) => {
+      try {
+        let info = JSON.parse(row.info.headers);
+        console.log(row.deviceId, info);
+        if(info.OS) {
+          // row.update({info});
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+
+    })
+  }
+
   static runService() {
-    new DataGenerateService([anonymousSession, signUp, userData, logout, login]);
+    new DataGenerateService([anonymousSession, signUp, userData, logout, login, event]);
+    // new DataGenerateService([adjustData]);
   }
 
 }

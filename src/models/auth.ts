@@ -176,7 +176,6 @@ class AuthModel {
     const user = req.iuser as User;
     req.session!.update({anonymous: true});
     EventsService.userLogout(user.userId, req);
-    EventsService.sessionEnd(user.userId, req);
   }
 }
 

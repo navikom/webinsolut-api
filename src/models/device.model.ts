@@ -41,6 +41,7 @@ class IDevice extends Model<IDevice> {
   public users!: Array<User & { UsersDevices: UsersDevices }>;
 }
 
+// SELECT * from devices where info->'OS'->>'name' = 'unknown';
 export class Device extends IDevice {
   static async findOrCreateOne(info: any): Promise<Device> {
     const data = await this.findOrCreate({

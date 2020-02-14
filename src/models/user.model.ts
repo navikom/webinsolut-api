@@ -24,7 +24,6 @@ import { UsersRegions } from '@app/models/usersRegions.model';
 import { Region } from '@app/models/region.model';
 import { Device } from '@app/models/device.model';
 import { Role } from '@app/models/role.model';
-import { Session } from '@app/models/session.model';
 
 import EventsService from '@app/services/event.service';
 import { RichRequest } from '@app/interfaces/RichRequest';
