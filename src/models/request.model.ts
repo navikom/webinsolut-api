@@ -3,29 +3,28 @@ import {
   Column,
   CreatedAt,
   DataType,
-  Default, DeletedAt,
+  Default,
   Model,
   PrimaryKey,
   Table,
-  UpdatedAt
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
-@Table({tableName: 'requests', updatedAt: false})
+@Table({ tableName: "requests", updatedAt: false })
 export class Logs extends Model<Logs> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'request_id'})
+  @Column({ type: DataType.NUMBER, field: "request_id" })
   public requestId!: number;
 
   @Column(DataType.STRING)
-  public token!: string;
+  public sid!: string;
 
   @Column(DataType.STRING)
   public url!: string;
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @Column(DataType.STRING)

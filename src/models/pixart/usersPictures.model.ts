@@ -10,20 +10,20 @@ import {
   PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
-import {User} from '@app/models/user.model';
-import {PixartPicture} from '@app/models/pixart/picture.model';
+} from "sequelize-typescript";
+import { User } from "@app/models/user.model";
+import { PixartPicture } from "@app/models/pixart/picture.model";
 
-@Table({tableName: 'pixart_users_pictures', timestamps: true, paranoid: true})
+@Table({ tableName: "pixart_users_pictures", timestamps: true, paranoid: true })
 export class PixartUsersPictures extends Model<PixartUsersPictures> {
   @ForeignKey(() => User)
   @PrimaryKey
-  @Column({field: 'user_id'})
+  @Column({ field: "user_id" })
   public userId!: number;
 
   @ForeignKey(() => PixartPicture)
   @PrimaryKey
-  @Column({field: 'picture_id'})
+  @Column({ field: "picture_id" })
   public pictureId!: number;
 
   @Column(DataType.JSON)
@@ -34,15 +34,15 @@ export class PixartUsersPictures extends Model<PixartUsersPictures> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 
   @BelongsTo(() => User)

@@ -1,4 +1,4 @@
-import {DeviceInfoType} from '@app/models/types/models';
+import { DeviceInfoType } from "@app/models/types/models";
 
 type Data = {
   name: string;
@@ -9,23 +9,23 @@ type Data = {
 export class DeviceInfoService {
   headers: string[] = [];
   dataos: Data[] = [
-    {name: 'Windows Phone', value: 'Windows Phone', version: 'OS'},
-    {name: 'Windows', value: 'Win', version: 'NT'},
-    {name: 'Kindle', value: 'Silk', version: 'Silk'},
-    {name: 'PlayBook', value: 'PlayBook', version: 'OS'},
-    {name: 'BlackBerry', value: 'BlackBerry', version: '/'},
-    {name: 'Macintosh', value: 'Mac', version: 'OS X'},
-    {name: 'Linux', value: 'Linux', version: 'rv'},
-    {name: 'Palm', value: 'Palm', version: 'PalmOS'}
+    { name: "Windows Phone", value: "Windows Phone", version: "OS" },
+    { name: "Windows", value: "Win", version: "NT" },
+    { name: "Kindle", value: "Silk", version: "Silk" },
+    { name: "PlayBook", value: "PlayBook", version: "OS" },
+    { name: "BlackBerry", value: "BlackBerry", version: "/" },
+    { name: "Macintosh", value: "Mac", version: "OS X" },
+    { name: "Linux", value: "Linux", version: "rv" },
+    { name: "Palm", value: "Palm", version: "PalmOS" }
   ];
   databrowser: Data[] = [
-    {name: 'Chrome', value: 'Chrome', version: 'Chrome'},
-    {name: 'Firefox', value: 'Firefox', version: 'Firefox'},
-    {name: 'Safari', value: 'Safari', version: 'Version'},
-    {name: 'Internet Explorer', value: 'MSIE', version: 'MSIE'},
-    {name: 'Opera', value: 'Opera', version: 'Opera'},
-    {name: 'BlackBerry', value: 'CLDC', version: 'CLDC'},
-    {name: 'Mozilla', value: 'Mozilla', version: 'Mozilla'}
+    { name: "Chrome", value: "Chrome", version: "Chrome" },
+    { name: "Firefox", value: "Firefox", version: "Firefox" },
+    { name: "Safari", value: "Safari", version: "Version" },
+    { name: "Internet Explorer", value: "MSIE", version: "MSIE" },
+    { name: "Opera", value: "Opera", version: "Opera" },
+    { name: "BlackBerry", value: "CLDC", version: "CLDC" },
+    { name: "Mozilla", value: "Mozilla", version: "Mozilla" }
   ];
 
   constructor(userAgent: string) {
@@ -37,21 +37,22 @@ export class DeviceInfoService {
     try {
       info = JSON.parse(this.headers[0]);
       if (info.androidId) {
-        return {name: 'Android', version: info.release};
-      } else if(info.vendorId) {
-        return {name: 'IOS', version: info.release};
+        return { name: "Android", version: info.release };
+      } else if (info.vendorId) {
+        return { name: "IOS", version: info.release };
       }
-    } catch (e) {}
+    } catch (e) {
+    }
 
     for (let i = 0; i < data.length; i += 1) {
-      const string = this.headers.join(' ');
-      const regex = new RegExp(data[i].value, 'i');
+      const string = this.headers.join(" ");
+      const regex = new RegExp(data[i].value, "i");
       const match = regex.test(string);
       if (match) {
-        const regexv = new RegExp(data[i].version + '[- /:;]([\\d._]+)', 'i');
+        const regexv = new RegExp(data[i].version + "[- /:;]([\\d._]+)", "i");
         let matches = string.match(regexv);
         let matchFound;
-        let version = '';
+        let version = "";
         if (matches) {
           if (matches[1]) {
             matchFound = matches[1];
@@ -61,13 +62,13 @@ export class DeviceInfoService {
           matches = matchFound.split(/[._]+/);
           for (let j = 0; j < matches.length; j += 1) {
             if (j === 0) {
-              version += matches[j] + '.';
+              version += matches[j] + ".";
             } else {
               version += matches[j];
             }
           }
         } else {
-          version = '0';
+          version = "0";
         }
         return {
           name: data[i].name,
@@ -75,12 +76,12 @@ export class DeviceInfoService {
         };
       }
     }
-    return {name: 'unknown', version: 0};
+    return { name: "unknown", version: 0 };
   }
 
   info(): DeviceInfoType {
     const os = this.match(this.dataos);
-    const browser = {}; //this.match(this.databrowser);
+    const browser = this.match(this.databrowser);
     return {
       headers: this.headers[0],
       OS: os,

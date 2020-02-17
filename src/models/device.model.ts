@@ -10,15 +10,15 @@ import {
   PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
-import {User} from '@app/models/user.model';
-import {UsersDevices} from '@app/models/usersDevices.model';
+} from "sequelize-typescript";
+import { User } from "@app/models/user.model";
+import { UsersDevices } from "@app/models/usersDevices.model";
 
-@Table({tableName: 'devices', timestamps: true, paranoid: true})
+@Table({ tableName: "devices", timestamps: true, paranoid: true })
 class IDevice extends Model<IDevice> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'device_id'})
+  @Column({ type: DataType.NUMBER, field: "device_id" })
   public deviceId!: number;
 
   @Column(DataType.JSONB)
@@ -26,15 +26,15 @@ class IDevice extends Model<IDevice> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 
   @BelongsToMany(() => User, () => UsersDevices)
@@ -45,8 +45,8 @@ class IDevice extends Model<IDevice> {
 export class Device extends IDevice {
   static async findOrCreateOne(info: any): Promise<Device> {
     const data = await this.findOrCreate({
-      where: {'info.headers': info.headers},
-      defaults: {info}
+      where: { "info.headers": info.headers },
+      defaults: { info }
     });
     return data[0];
   }

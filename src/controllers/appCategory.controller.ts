@@ -1,9 +1,9 @@
-import {MainController} from '@app/controllers/main.controller';
-import {ACategory} from '@app/models/aCategory.model';
+import { MainController } from "@app/controllers/main.controller";
+import { ACategory } from "@app/models/aCategory.model";
 
 class AppCategoryController extends MainController<ACategory> {
   constructor() {
-    super(ACategory, 'app-category');
+    super(ACategory, "app-category");
   }
 }
 

@@ -13,23 +13,24 @@ import {
   DeletedAt,
   HasMany,
   Sequelize,
-} from 'sequelize-typescript';
-import { App } from '@app/models/app.model';
-import { UsersApps } from '@app/models/usersApps.model';
-import { UsersRoles } from '@app/models/usersRoles.model';
-import { UsersDevices } from '@app/models/usersDevices.model';
-import { Event } from '@app/models/event.model';
-import { ErrorHandler } from '@app/helpers/ErrorHandler';
-import { UsersRegions } from '@app/models/usersRegions.model';
-import { Region } from '@app/models/region.model';
-import { Device } from '@app/models/device.model';
-import { Role } from '@app/models/role.model';
+} from "sequelize-typescript";
+import App from "@app/models/app.model";
+import { UsersApps } from "@app/models/usersApps.model";
+import { UsersRoles } from "@app/models/usersRoles.model";
+import { UsersDevices } from "@app/models/usersDevices.model";
+import { Event } from "@app/models/event.model";
+import { ErrorHandler } from "@app/helpers/ErrorHandler";
+import { UsersRegions } from "@app/models/usersRegions.model";
+import { Region } from "@app/models/region.model";
+import { Device } from "@app/models/device.model";
+import { Role } from "@app/models/role.model";
 
-import EventsService from '@app/services/event.service';
-import { RichRequest } from '@app/interfaces/RichRequest';
+import EventsService from "@app/services/event.service";
+import { RichRequest } from "@app/interfaces/RichRequest";
+import Sessions from "@app/models/session.model";
 
-export const MALE: string = 'male';
-export const FEMALE: string = 'female';
+export const MALE: string = "male";
+export const FEMALE: string = "female";
 
 export const EMAIL_CHANNEL: number = 1;
 export const SMS_CHANNEL: number = 2;
@@ -37,15 +38,15 @@ export const IN_APP_CHANNEL: number = 3;
 export const PUSH_CHANNEL: number = 4;
 
 const ChannelKeys: { [key: string]: string } = {
-  EMAIL_CHANNEL: 'notificationEmail',
-  SMS_CHANNEL: 'notificationSms'
+  EMAIL_CHANNEL: "notificationEmail",
+  SMS_CHANNEL: "notificationSms"
 };
 
-@Table({ tableName: 'users', timestamps: true, paranoid: true })
+@Table({ tableName: "users", timestamps: true, paranoid: true })
 export class IUser extends Model<IUser> {
   @PrimaryKey
   @AutoIncrement
-  @Column({ type: DataType.NUMBER, field: 'user_id' })
+  @Column({ type: DataType.NUMBER, field: "user_id" })
   public userId!: number;
 
   @IsEmail
@@ -57,47 +58,47 @@ export class IUser extends Model<IUser> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({ field: 'created_at' })
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at' })
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({ field: 'deleted_at' })
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 
   @Default(Date.now())
-  @Column({ type: DataType.DATE, field: 'last_session' })
+  @Column({ type: DataType.DATE, field: "last_session" })
   public lastSession!: number;
 
-  @Column({ type: DataType.STRING, field: 'first_name' })
+  @Column({ type: DataType.STRING, field: "first_name" })
   public firstName!: string;
 
-  @Column({ type: DataType.STRING, field: 'last_name' })
+  @Column({ type: DataType.STRING, field: "last_name" })
   public lastName!: string;
 
-  @Is(['^[0-9]+$', 'i'])
+  @Is(["^[0-9]+$", "i"])
   @Column(DataType.NUMBER)
   public phone!: number;
 
   @Column(DataType.DATE)
   public birthday!: Date;
 
-  @Column({ type: DataType.BOOLEAN, field: 'email_verified' })
+  @Column({ type: DataType.BOOLEAN, field: "email_verified" })
   public emailVerified!: boolean;
 
-  @Column({ type: DataType.BOOLEAN, field: 'phone_verified' })
+  @Column({ type: DataType.BOOLEAN, field: "phone_verified" })
   public phoneVerified!: boolean;
 
   @Column(DataType.ENUM(MALE, FEMALE))
-  public gender!: 'male' | 'female';
+  public gender!: "male" | "female";
 
-  @Column({ type: DataType.BOOLEAN, field: 'notification_email' })
+  @Column({ type: DataType.BOOLEAN, field: "notification_email" })
   public notificationEmail!: boolean;
 
-  @Column({ type: DataType.BOOLEAN, field: 'notification_sms' })
+  @Column({ type: DataType.BOOLEAN, field: "notification_sms" })
   public notificationSms!: boolean;
 
   @Column(DataType.BOOLEAN)
@@ -106,7 +107,7 @@ export class IUser extends Model<IUser> {
   @Column(DataType.NUMBER)
   public referrer!: number;
 
-  @Column({ type: DataType.STRING, field: 'reset_password_token' })
+  @Column({ type: DataType.STRING, field: "reset_password_token" })
   public resetPasswordToken!: string;
 
   @HasMany(() => UsersRoles)
@@ -142,7 +143,7 @@ const checkSubscriptions = async (body: IUser, user: User, req: RichRequest) => 
 export class User extends IUser {
   static list(): Promise<[User]> {
     return this.findAll({
-      attributes: { exclude: ['password', 'refreshToken', 'resetPasswordToken'] }
+      attributes: { exclude: ["password", "refreshToken", "resetPasswordToken"] }
     });
   }
 
@@ -150,12 +151,12 @@ export class User extends IUser {
     return this.findAll({
       offset, limit,
       attributes: {
-        exclude: ['password', 'refreshToken', 'resetPasswordToken'],
-        include: [[Sequelize.literal('(Select COUNT(*) FROM events e WHERE e.user_id = "IUser"."user_id")'), 'eventsCount']]
+        exclude: ["password", "refreshToken", "resetPasswordToken"],
+        include: [[Sequelize.literal("(Select COUNT(*) FROM events e WHERE e.user_id = \"IUser\".\"user_id\")"), "eventsCount"]]
       },
       include: [{
         model: UsersRoles,
-        attributes: { exclude: ['roleId', 'userId'] },
+        attributes: { exclude: ["roleId", "userId"] },
         include: [{
           model: Role
         }]
@@ -170,7 +171,7 @@ export class User extends IUser {
       offset, limit,
       where: { referrer },
       attributes: {
-        exclude: ['password', 'refreshToken', 'resetPasswordToken'],
+        exclude: ["password", "refreshToken", "resetPasswordToken"],
       }
     };
     return this.findAndCountAll(query);
@@ -180,19 +181,19 @@ export class User extends IUser {
     const query: any = {
       paranoid: false,
       where: { email },
-      attributes: { exclude: ['refreshToken', 'resetPasswordToken'] },
+      attributes: { exclude: ["refreshToken", "resetPasswordToken"] },
       include: [{
         model: UsersRoles,
-        attributes: { exclude: ['roleId', 'userId'] },
+        attributes: { exclude: ["roleId", "userId"] },
         include: [{
           model: Role
         }]
       }, {
         model: UsersApps,
-        attributes: { exclude: ['refreshToken'] },
+        attributes: { exclude: ["refreshToken"] },
         include: [{
           model: App,
-          attributes: ['title']
+          attributes: ["title"]
         }]
       }]
     };
@@ -208,21 +209,21 @@ export class User extends IUser {
     const query: any = {
       where: { userId },
       attributes: {
-        exclude: ['password', 'refreshToken'],
-        include: [[Sequelize.literal('(Select COUNT(*) FROM events e WHERE e.user_id = "IUser"."user_id")'), 'eventsCount']]
+        exclude: ["password", "refreshToken"],
+        include: [[Sequelize.literal("(Select COUNT(*) FROM events e WHERE e.user_id = \"IUser\".\"user_id\")"), "eventsCount"]]
       },
       include: [{
         model: UsersRoles,
-        attributes: { exclude: ['roleId', 'userId'] },
+        attributes: { exclude: ["roleId", "userId"] },
         include: [{
           model: Role
         }]
       }, {
         model: UsersApps,
-        attributes: { exclude: ['refreshToken'] },
+        attributes: { exclude: ["refreshToken"] },
         include: [{
           model: App,
-          attributes: ['title']
+          attributes: ["title"]
         }]
       }]
     };
@@ -234,56 +235,41 @@ export class User extends IUser {
     const query: any = {
       where: { userId },
       attributes: {
-        exclude: ['password', 'refreshToken'],
+        exclude: ["password", "refreshToken"],
         include: [
-          [Sequelize.literal('(Select COUNT(*) FROM events e WHERE e.user_id = "IUser"."user_id")'), 'eventsCount'],
-          [Sequelize.literal('(SELECT created_at FROM events e WHERE e.user_id = "IUser"."user_id" ORDER BY e.created_at DESC LIMIT 1)'), 'lastEvent'],
-          [Sequelize.literal('(SELECT anonymous FROM sessions ses WHERE ses.user_id = "IUser"."user_id" ORDER BY ses.session_id DESC LIMIT 1)'), 'anonymous']
+          [Sequelize.literal("(Select COUNT(*) FROM events e WHERE e.user_id = \"IUser\".\"user_id\")"), "eventsCount"],
+          [Sequelize.literal("(SELECT created_at FROM events e WHERE e.user_id = \"IUser\".\"user_id\" ORDER BY e.created_at DESC LIMIT 1)"), "lastEvent"],
+          [Sequelize.literal("(SELECT anonymous FROM sessions ses WHERE ses.user_id = \"IUser\".\"user_id\" ORDER BY ses.session_id DESC LIMIT 1)"), "anonymous"]
         ]
       },
       include: [{
         model: UsersRoles,
-        attributes: { exclude: ['roleId', 'userId'] },
+        attributes: { exclude: ["roleId", "userId"] },
         include: [{
           model: Role
         }]
       }, {
         model: UsersRegions,
         attributes: {
-          exclude: ['userId']
+          exclude: ["userId"]
         },
         include: [{
           model: Region,
-          attributes: { exclude: ['regionId', 'createdAt', 'updatedAt', 'deletedAt'] },
+          attributes: { exclude: ["regionId", "createdAt", "updatedAt", "deletedAt"] },
         }]
       }, {
         model: UsersApps,
-        attributes: { exclude: ['refreshToken'] },
+        attributes: { exclude: ["refreshToken"] },
         include: [{
           model: App,
-          attributes: ['title']
+          attributes: ["title"]
         }]
       }, {
         model: UsersDevices,
-        attributes: { exclude: ['userId'] },
+        attributes: { exclude: ["userId"] },
         include: [{
           model: Device,
-          attributes: { exclude: ['deviceId', 'createdAt', 'updatedAt', 'deletedAt'] },
-        }]
-      }]
-    };
-
-    return this.findOne(query);
-  }
-
-  static findByIdWithTokens(userId: number): Promise<User> {
-    const query: any = {
-      where: { userId }, attributes: { exclude: ['password'] },
-      include: [{
-        model: UsersApps,
-        include: [{
-          model: App,
-          attributes: ['title']
+          attributes: { exclude: ["deviceId", "createdAt", "updatedAt", "deletedAt"] },
         }]
       }]
     };
@@ -293,7 +279,7 @@ export class User extends IUser {
 
   static findByResetToken(resetPasswordToken: string) {
     const query: any = {
-      where: { resetPasswordToken }, attributes: ['userId'],
+      where: { resetPasswordToken }, attributes: ["userId"],
     };
     return this.findOne(query);
   }
@@ -319,14 +305,9 @@ export class User extends IUser {
     return user.update({ resetPasswordToken });
   }
 
-  static async refreshToken(user: User, refreshToken: string) {
-    this.update({ refreshToken }, { where: { userId: user.userId } });
-    return this.findById(user.userId);
-  }
-
   static async updateOne(id: number, req: RichRequest) {
     const user = await User.findById(id);
-    if (!user) throw new ErrorHandler('instance-not-exists');
+    if (!user) throw new ErrorHandler("instance-not-exists");
     checkSubscriptions(req.body, user, req);
     await user.update(req.body);
     return User.findById(user.userId);
@@ -353,16 +334,20 @@ export class User extends IUser {
 
     return UsersRoles.findAll({
       where: { userId },
-      attributes: { exclude: ['roleId', 'userId'] },
+      attributes: { exclude: ["roleId", "userId"] },
       include: [{
         model: Role
       }]
     });
   }
 
+  static async createAndAssignToSession(session: any) {
+    session.user = await User.create();
+  }
+
   static async updateSubscription(userId: string, channel: string, action: string) {
     const body = {
-      [ChannelKeys[channel]]: action === '1'
+      [ChannelKeys[channel]]: action === "1"
     };
     this.updateOne(Number(userId), { body } as RichRequest);
   }

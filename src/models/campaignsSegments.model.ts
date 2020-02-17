@@ -9,21 +9,21 @@ import {
   PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
-import {Campaign} from '@app/models/campaign.model';
-import {Segment} from '@app/models/segment.model';
+} from "sequelize-typescript";
+import { Campaign } from "@app/models/campaign.model";
+import { Segment } from "@app/models/segment.model";
 
-@Table({tableName: 'campaigns_segments'})
+@Table({ tableName: "campaigns_segments" })
 export class CampaignsSegments extends Model<CampaignsSegments> {
 
   @ForeignKey(() => Campaign)
   @PrimaryKey
-  @Column({field: 'campaign_id'})
+  @Column({ field: "campaign_id" })
   public campaignId!: number;
 
   @ForeignKey(() => Segment)
   @PrimaryKey
-  @Column({field: 'segment_id'})
+  @Column({ field: "segment_id" })
   public segmentId!: number;
 
   @Default(true)
@@ -32,11 +32,11 @@ export class CampaignsSegments extends Model<CampaignsSegments> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @BelongsTo(() => Campaign)

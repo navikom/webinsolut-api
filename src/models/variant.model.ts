@@ -8,18 +8,18 @@ import {
   PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
-import {Campaign} from '@app/models/campaign.model';
+} from "sequelize-typescript";
+import { Campaign } from "@app/models/campaign.model";
 
-@Table({tableName: 'variants', timestamps: true})
+@Table({ tableName: "variants", timestamps: true })
 class IVariant extends Model<IVariant> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'variant_id'})
+  @Column({ type: DataType.NUMBER, field: "variant_id" })
   public variantId!: number;
 
   @ForeignKey(() => Campaign)
-  @Column({type: DataType.NUMBER, field: 'campaign_id'})
+  @Column({ type: DataType.NUMBER, field: "campaign_id" })
   public campaignId!: number;
 
   @Column(DataType.JSONB)
@@ -27,11 +27,11 @@ class IVariant extends Model<IVariant> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @BelongsTo(() => Campaign)

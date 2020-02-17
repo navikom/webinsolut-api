@@ -8,13 +8,13 @@ import {
   Model,
   PrimaryKey, Table,
   UpdatedAt
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
-@Table({tableName: 'images', timestamps: true, paranoid: true})
+@Table({ tableName: "images", timestamps: true, paranoid: true })
 export class Image extends Model<Image> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'image_id'})
+  @Column({ type: DataType.NUMBER, field: "image_id" })
   public imageId!: number;
 
   @Column(DataType.STRING)
@@ -25,14 +25,14 @@ export class Image extends Model<Image> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 }

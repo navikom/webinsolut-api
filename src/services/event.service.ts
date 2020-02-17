@@ -1,41 +1,40 @@
-import {User} from '@app/models/user.model';
-import {Payment} from '@app/models/payment.model';
-import {Event} from '@app/models/event.model';
-import {RichRequest} from '@app/interfaces/RichRequest';
+import { Payment } from "@app/models/payment.model";
+import { Event } from "@app/models/event.model";
+import { RichRequest } from "@app/interfaces/RichRequest";
 
-const APP_DOWNLOAD_EVENT = 'App Download';
-const SESSION_START_EVENT = 'Session Start';
-const SESSION_END_EVENT = 'Session End';
-const APP_UNINSTALLED_EVENT = 'App Uninstalled';
-const USER_REGISTERED_EVENT = 'User Registered';
-const USER_LOGIN_EVENT = 'User Login';
-const USER_LOGOUT_EVENT = 'User Logout';
-const APP_UPGRADE_EVENT = 'App Upgrade';
-const APP_CRASH_EVENT = 'App Crash';
-const PAYMENT_SUCCESS_EVENT = 'Payment Success';
-const PAYMENT_FAILURE_EVENT = 'Payment Failure';
-const NOTIFICATION_EMAIL_STATUS_CHANGED_EVENT = 'Email Subscription';
-const NOTIFICATION_SMS_STATUS_CHANGED_EVENT = 'SMS Subscription';
-const EMAIL_VERIFIED_EVENT = 'Email Verified';
-const REFERRAL_ADDED_EVENT = 'Referral Added';
-const CARD_ADDED_EVENT = 'Card Added';
-const ADDS_PRESSED_EVENT = 'Adds Pressed';
-const EMAIL_ACCEPTED = 'Email Accepted';
-const EMAIL_BOUNCED = 'Email Bounced';
-const EMAIL_DELIVERED = 'Email Delivered';
-const EMAIL_OPEN = 'Email Open';
-const EMAIL_REJECTED = 'Email Rejected';
-const EMAIL_UNSUBSCRIBE = 'Email Unsubscribe';
-const GSM_APNS_REGISTERED = 'GSM/APNs Registered';
-const JOURNEY_ENDED = 'Journey Ended';
-const JOURNEY_STARTED = 'Journey Started';
-const IN_APP_NOTIFICATION_CLICK = 'In-app Notification Click';
-const IN_APP_NOTIFICATION_CLOSE = 'In-app Notification Close';
-const IN_APP_NOTIFICATION_IMPRESSION = 'In-app Notification Impression';
-const PUSH_RECEIVED = 'Push Received';
-const PUSH_SENT = 'Push Sent';
-const PUSH_CLICK = 'Push Click';
-const PUSH_DISMISS = 'Push Dismiss';
+const APP_DOWNLOAD_EVENT = "App Download";
+const SESSION_START_EVENT = "Session Start";
+const SESSION_END_EVENT = "Session End";
+const APP_UNINSTALLED_EVENT = "App Uninstalled";
+const USER_REGISTERED_EVENT = "User Registered";
+const USER_LOGIN_EVENT = "User Login";
+const USER_LOGOUT_EVENT = "User Logout";
+const APP_UPGRADE_EVENT = "App Upgrade";
+const APP_CRASH_EVENT = "App Crash";
+const PAYMENT_SUCCESS_EVENT = "Payment Success";
+const PAYMENT_FAILURE_EVENT = "Payment Failure";
+const NOTIFICATION_EMAIL_STATUS_CHANGED_EVENT = "Email Subscription";
+const NOTIFICATION_SMS_STATUS_CHANGED_EVENT = "SMS Subscription";
+const EMAIL_VERIFIED_EVENT = "Email Verified";
+const REFERRAL_ADDED_EVENT = "Referral Added";
+const CARD_ADDED_EVENT = "Card Added";
+const ADDS_PRESSED_EVENT = "Adds Pressed";
+const EMAIL_ACCEPTED = "Email Accepted";
+const EMAIL_BOUNCED = "Email Bounced";
+const EMAIL_DELIVERED = "Email Delivered";
+const EMAIL_OPEN = "Email Open";
+const EMAIL_REJECTED = "Email Rejected";
+const EMAIL_UNSUBSCRIBE = "Email Unsubscribe";
+const GSM_APNS_REGISTERED = "GSM/APNs Registered";
+const JOURNEY_ENDED = "Journey Ended";
+const JOURNEY_STARTED = "Journey Started";
+const IN_APP_NOTIFICATION_CLICK = "In-app Notification Click";
+const IN_APP_NOTIFICATION_CLOSE = "In-app Notification Close";
+const IN_APP_NOTIFICATION_IMPRESSION = "In-app Notification Impression";
+const PUSH_RECEIVED = "Push Received";
+const PUSH_SENT = "Push Sent";
+const PUSH_CLICK = "Push Click";
+const PUSH_DISMISS = "Push Dismiss";
 
 const info = (req: RichRequest) => ({
   app: req.iapp!.toJSON(),
@@ -90,15 +89,15 @@ export default class EventsService {
   }
 
   static appCrashed(req: RichRequest) {
-    this.createEvent(APP_CRASH_EVENT, req.iuser ? req.iuser.userId : null, req);
+    this.createEvent(APP_CRASH_EVENT, req.session && req.session.user ? req.session.user.userId : null, req);
   }
 
   static paymentSuccess(userId: number, payment: Payment, req: RichRequest) {
-    this.createEvent(PAYMENT_SUCCESS_EVENT, userId, req, {payment: payment.toJSON()});
+    this.createEvent(PAYMENT_SUCCESS_EVENT, userId, req, { payment: payment.toJSON() });
   }
 
   static paymentFailed(userId: number, payment: Payment, req: RichRequest) {
-    this.createEvent(PAYMENT_FAILURE_EVENT, userId, req, {payment: payment.toJSON()});
+    this.createEvent(PAYMENT_FAILURE_EVENT, userId, req, { payment: payment.toJSON() });
   }
 
   static notificationSmsStatusChanged(userId: number, req: RichRequest) {
@@ -113,16 +112,16 @@ export default class EventsService {
     this.createEvent(EMAIL_VERIFIED_EVENT, userId, req);
   }
 
-  static referralAdded(referral: User, req: RichRequest) {
-    this.createEvent(REFERRAL_ADDED_EVENT, referral.referrer, req, {referral: referral.toJSON()});
-  }
+  // static referralAdded(referral: User, req: RichRequest) {
+  //   this.createEvent(REFERRAL_ADDED_EVENT, referral.referrer, req, { referral: referral.toJSON() });
+  // }
 
   static cardAdded(card: number, userId: number, req: RichRequest) {
-    this.createEvent(CARD_ADDED_EVENT, userId, req, {card});
+    this.createEvent(CARD_ADDED_EVENT, userId, req, { card });
   }
 
   static adsPressed(userId: number, req: RichRequest, ads: any) {
-    this.createEvent(CARD_ADDED_EVENT, userId, req, {ads});
+    this.createEvent(CARD_ADDED_EVENT, userId, req, { ads });
   }
 
   static systemEventsList() {

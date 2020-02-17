@@ -12,7 +12,7 @@ export interface LoginType {
   email: string;
   password: string;
   token: string,
-  grantType: 'password' | 'refresh_token'
+  grantType: "password" | "refresh_token"
 }
 
 export interface JWTTokenType {

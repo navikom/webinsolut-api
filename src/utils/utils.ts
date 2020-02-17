@@ -13,7 +13,10 @@ export function randomItemCount(array: any[], count: number) {
   };
 
   const arr = [...Array(count)];
-  const reduced = arr.reduce((a: number[]) => {a.push(getFreshNum(a)); return a}, []);
+  const reduced = arr.reduce((a: number[]) => {
+    a.push(getFreshNum(a));
+    return a
+  }, []);
   return reduced.map((i: number) => array[i]);
 }
 
@@ -22,7 +25,7 @@ export function randomId() {
 }
 
 export function randomString(length: number) {
-  return [...Array(length)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+  return [...Array(length)].map(i => (~~(Math.random() * 36)).toString(36)).join("");
 }
 
 export function asyncTimeout(duration: number) {

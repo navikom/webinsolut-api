@@ -1,15 +1,15 @@
-import {MainController} from '@app/controllers/main.controller';
-import {PixartPicture} from '@app/models/pixart/picture.model';
-import * as e from 'express';
-import {errorResponse, successResponse} from '@app/helpers/HTTPResponse';
-import {HTTPStatus} from '@app/helpers/HTTPStatus';
+import { MainController } from "@app/controllers/main.controller";
+import { PixartPicture } from "@app/models/pixart/picture.model";
+import * as e from "express";
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
 
 class PictureController extends MainController<PixartPicture> {
   constructor() {
-    super(PixartPicture, 'pixart-pictures');
+    super(PixartPicture, "pixart-pictures");
   }
 
-  async save(req: e.Request & {files: any}, res: e.Response): Promise<void> {
+  async save(req: e.Request & { files: any }, res: e.Response): Promise<void> {
     try {
       res.send(successResponse(await PixartPicture.savePictures(req.files || [], req.body.categoryId)));
     } catch (e) {
@@ -23,7 +23,7 @@ class PictureController extends MainController<PixartPicture> {
       const pageSize = parseInt(req.params.pageSize);
       const offset = page * pageSize;
       const limit = offset + pageSize;
-      const data = await PixartPicture.findAllWithPagination({limit, offset});
+      const data = await PixartPicture.findAllWithPagination({ limit, offset });
       res.send(successResponse({
           page, pageSize,
           count: data.count,

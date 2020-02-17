@@ -1,21 +1,21 @@
-import {errorResponse, successResponse} from '@app/helpers/HTTPResponse';
-import * as e from 'express';
-import {User} from '@app/models/user.model';
-import {MainController} from '@app/controllers/main.controller';
-import {ErrorHandler} from '@app/helpers/ErrorHandler';
-import AuthService from '@app/services/auth.service';
-import {HTTPStatus} from '@app/helpers/HTTPStatus';
-import {RichRequest} from '@app/interfaces/RichRequest';
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import * as e from "express";
+import { User } from "@app/models/user.model";
+import { MainController } from "@app/controllers/main.controller";
+import { ErrorHandler } from "@app/helpers/ErrorHandler";
+import AuthService from "@app/services/auth.service";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
+import { RichRequest } from "@app/interfaces/RichRequest";
 
 class UserController extends MainController<User> {
   constructor() {
-    super(User, 'users');
+    super(User, "users");
   }
 
   async getOne(req: e.Request, res: e.Response): Promise<void> {
     try {
       const user = await User.findFullDataById(parseInt(req.params.id));
-      if(!user) throw new ErrorHandler('user-not-found');
+      if (!user) throw new ErrorHandler("user-not-found");
       res.send(successResponse(user));
     } catch (e) {
       res.status(HTTPStatus.SERVER_ERROR).send(errorResponse(`${this.name}:${e.message}`));

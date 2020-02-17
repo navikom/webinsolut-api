@@ -1,19 +1,19 @@
-import * as e from 'express';
-import {MainController} from '@app/controllers/main.controller';
-import {Event} from '@app/models/event.model';
-import {errorResponse, successResponse} from '@app/helpers/HTTPResponse';
-import {HTTPStatus} from '@app/helpers/HTTPStatus';
-import { RichRequest } from '@app/interfaces/RichRequest';
-import EventsService from '@app/services/event.service';
+import * as e from "express";
+import { MainController } from "@app/controllers/main.controller";
+import { Event } from "@app/models/event.model";
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
+import { RichRequest } from "@app/interfaces/RichRequest";
+import EventsService from "@app/services/event.service";
 
 class EventController extends MainController<Event> {
   constructor() {
-    super(Event, 'events');
+    super(Event, "events");
   }
 
-  async create(req: RichRequest, res: e.Response): Promise<void> {
+  async create(req: e.Request, res: e.Response): Promise<void> {
     try {
-      EventsService.createEvent(req.body.title, req.iuser!.userId, req, req.body.data);
+      // EventsService.createEvent(req.body.title, req.iuser!.userId, req, req.body.data);
       res.send(successResponse(true));
     } catch (e) {
       res.status(HTTPStatus.SERVER_ERROR).send(errorResponse(`${this.name}:${e.message}`));

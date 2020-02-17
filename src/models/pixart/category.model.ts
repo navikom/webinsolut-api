@@ -8,13 +8,13 @@ import {
   PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
-@Table({tableName: 'pixart_categories', timestamps: true, paranoid: true})
+@Table({ tableName: "pixart_categories", timestamps: true, paranoid: true })
 export class PixartCategory extends Model<PixartCategory> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'category_id'})
+  @Column({ type: DataType.NUMBER, field: "category_id" })
   public categoryId!: number;
 
   @Column(DataType.STRING)
@@ -22,14 +22,14 @@ export class PixartCategory extends Model<PixartCategory> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 }

@@ -1,19 +1,19 @@
-import {App} from '@app/models/app.model';
-import {MainController} from '@app/controllers/main.controller';
-import * as e from 'express';
-import {errorResponse, successResponse} from '@app/helpers/HTTPResponse';
-import {HTTPStatus} from '@app/helpers/HTTPStatus';
+import App from "@app/models/app.model";
+import { MainController } from "@app/controllers/main.controller";
+import * as e from "express";
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
 
 class AppController extends MainController<App> {
   constructor() {
-    super(App, 'apps');
+    super(App, "apps");
   }
 
   async create(req: e.Request, res: e.Response): Promise<void> {
     try {
       res.send(successResponse(await App.createApp(req.body)));
     } catch (e) {
-      res.status(HTTPStatus.SERVER_ERROR).send(errorResponse(`${this.name}:${e.errors && e.errors[0] &&  e.errors[0].message || e.message}`));
+      res.status(HTTPStatus.SERVER_ERROR).send(errorResponse(`${this.name}:${e.errors && e.errors[0] && e.errors[0].message || e.message}`));
     }
   }
 
@@ -25,7 +25,7 @@ class AppController extends MainController<App> {
     }
   }
 
-  async update(req: e.Request & {files: any}, res: e.Response): Promise<void> {
+  async update(req: e.Request & { files: any }, res: e.Response): Promise<void> {
     try {
       res.send(successResponse(await App.updateData(req.params.id, req.body, req.files)));
     } catch (e) {

@@ -1,52 +1,61 @@
 import {
-  AutoIncrement, BelongsTo,
+  AutoIncrement,
   Column,
   CreatedAt,
   DataType,
   Default,
-  DeletedAt, ForeignKey,
+  DeletedAt,
   Model,
-  PrimaryKey, Sequelize,
+  PrimaryKey,
   Table,
   UpdatedAt
-} from 'sequelize-typescript';
-import { User } from '@app/models/user.model';
+} from "sequelize-typescript";
+import { Promise as SPromise } from "sequelize"
+import { DestroyOptions } from "sequelize/types/lib/model";
+import CONFIG from "@app/config/config";
 
-@Table({tableName: 'sessions', timestamps: true, paranoid: true})
+@Table({ tableName: "sessions", timestamps: true, paranoid: true })
 class ISession extends Model<ISession> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'session_id'})
-  public sessionId!: number;
+  @Column(DataType.STRING)
+  public sid!: number;
 
-  @Column({type: DataType.NUMBER, field: 'user_id'})
+  @Column({ type: DataType.NUMBER, field: "user_id" })
   public userId!: number;
 
-  @Column({type: DataType.NUMBER, field: 'device_id'})
+  @Column({ type: DataType.NUMBER, field: "device_id" })
   public deviceId!: number;
 
-  @Column(DataType.BOOLEAN)
-  public anonymous!: boolean;
+  @Column(DataType.DATE)
+  public expires!: Date;
+
+  @Column(DataType.JSONB)
+  public data!: any;
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
+
+  public static destroy<T extends Model<T>>(this: (new () => T), options?: DestroyOptions): SPromise<number> {
+    return super.destroy.call(this, options);
+  }
 
 }
 
-export class Session extends ISession {
+class Sessions extends ISession {
   static async findById(sessionId: number) {
     const item = await this.findOne({
-      where: {sessionId},
+      where: { sessionId },
       paranoid: false
     });
     return item;
@@ -54,15 +63,26 @@ export class Session extends ISession {
 
   static findByUserId(userId: number) {
     return this.findAll({
-      where: {userId},
+      where: { userId },
       paranoid: false
     });
   }
 
+  static async updateUser(session: any) {
+    console.log(12121212, await Sessions.findByPk(session.id));
+    return Sessions.update(
+      {
+        userId: session.user.userId,
+        expires: new Date(Date.now() + parseInt(CONFIG.jwt_expiration) * 1000)
+      }, { where: { sid: session.id } });
+  }
+
   static findActiveByUserId(userId: number) {
     return this.findOne({
-      where: {userId, anonymous: false},
-      order: [['sessionId', 'DESC']]
+      where: { userId, anonymous: false },
+      order: [["sessionId", "DESC"]]
     });
   }
 }
+
+export default Sessions;

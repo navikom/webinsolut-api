@@ -1,12 +1,12 @@
-import {MainController} from '@app/controllers/main.controller';
-import {Role} from '@app/models/role.model';
-import * as e from 'express';
-import {errorResponse, successResponse} from '@app/helpers/HTTPResponse';
-import {HTTPStatus} from '@app/helpers/HTTPStatus';
+import { MainController } from "@app/controllers/main.controller";
+import { Role } from "@app/models/role.model";
+import * as e from "express";
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
 
 class RoleController extends MainController<Role> {
   constructor() {
-    super(Role, 'roles');
+    super(Role, "roles");
   }
 
   async getAll(req: e.Request, res: e.Response): Promise<void> {

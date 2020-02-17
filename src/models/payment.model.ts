@@ -8,18 +8,18 @@ import {
   Model,
   PrimaryKey,
   Table, UpdatedAt
-} from 'sequelize-typescript';
-import {User} from '@app/models/user.model';
+} from "sequelize-typescript";
+import { User } from "@app/models/user.model";
 
-@Table({tableName: 'payments', timestamps: true, paranoid: true})
+@Table({ tableName: "payments", timestamps: true, paranoid: true })
 export class Payment extends Model<Payment> {
   @PrimaryKey
   @AutoIncrement
-  @Column({type: DataType.NUMBER, field: 'payment_id'})
+  @Column({ type: DataType.NUMBER, field: "payment_id" })
   public paymentId!: number;
 
   @ForeignKey(() => User)
-  @Column({type: DataType.NUMBER, field: 'user_id'})
+  @Column({ type: DataType.NUMBER, field: "user_id" })
   public userId!: number;
 
   @BelongsTo(() => User)
@@ -36,14 +36,14 @@ export class Payment extends Model<Payment> {
 
   @CreatedAt
   @Default(DataType.NOW)
-  @Column({field: 'created_at'})
+  @Column({ field: "created_at" })
   public createdAt!: Date;
 
   @UpdatedAt
-  @Column({field: 'updated_at'})
+  @Column({ field: "updated_at" })
   public updatedAt!: Date;
 
   @DeletedAt
-  @Column({field: 'deleted_at'})
+  @Column({ field: "deleted_at" })
   public deletedAt!: Date;
 }

@@ -1,6 +1,6 @@
-import multer from 'multer';
-import Datauri from 'datauri';
-import path from 'path';
+import multer from "multer";
+import Datauri from "datauri";
+import path from "path";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -14,4 +14,4 @@ const dUri = new Datauri();
  */
 const dataUri = (file: any) => dUri.format(path.extname(file.originalname).toString(), file.buffer);
 
-export {upload, dataUri}
+export { upload, dataUri }

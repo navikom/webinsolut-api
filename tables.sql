@@ -97,11 +97,12 @@ CONSTRAINT users_roles_role_id_fkey FOREIGN KEY (role_id)
 );
 
 CREATE TABLE sessions (
-session_id SERIAL PRIMARY KEY,
+sid VARCHAR(255) PRIMARY KEY,
 user_id integer NOT NULL,
-device_id integer NOT NULL,
+device_id integer,
+expires timestamp,
+data jsonb,
 created_at timestamp NOT NULL,
-anonymous boolean default true,
 updated_at timestamp,
 deleted_at timestamp
 );
@@ -229,7 +230,7 @@ CREATE TABLE requests (
 request_id SERIAL PRIMARY KEY,
 url VARCHAR(255) NOT NULL,
 method VARCHAR(255) NOT NULL,
-token VARCHAR(255),
+sid VARCHAR(255),
 created_at timestamp without time zone NOT NULL,
 app VARCHAR(255),
 info jsonb
@@ -265,6 +266,7 @@ name VARCHAR(255) NOT NULL,
 user_data jsonb,
 behavior jsonb,
 technology jsonb,
+querystring jsonb,
 created_at timestamp NOT NULL,
 updated_at timestamp,
 deleted_at timestamp

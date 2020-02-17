@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
-import AuthService from '@app/services/auth.service';
-import { errorResponse, successResponse } from '@app/helpers/HTTPResponse';
-import { LoginSuccessResponse } from '@app/models/types/models';
-import { HTTPStatus } from '@app/helpers/HTTPStatus';
-import { RichRequest } from '@app/interfaces/RichRequest';
+import { Request, Response } from "express";
+import AuthService from "@app/services/auth.service";
+import { errorResponse, successResponse } from "@app/helpers/HTTPResponse";
+import { LoginSuccessResponse } from "@app/models/types/models";
+import { HTTPStatus } from "@app/helpers/HTTPStatus";
+import { RichRequest } from "@app/interfaces/RichRequest";
 
 class AuthController {
   async create(req: Request, res: Response) {
